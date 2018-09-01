@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="F:\Jsspace\d3.min.js"></script>
+	<script src="F:\Jsspace\reveal.min.js"></script>
+</head>
+<body>
+	<p></p>
+</body>
+<script type="text/javascript">
+var dataset=[3,6,9];
+var p=d3.select("body").selectAll(p);
+var update=p.data(dataset);
+var enter=update.enter();
+update.text(function(d){return d;});
+enter.append("p").text(function(d){return d;});
+//排序
+var numbers=[54,23,77,11,34];
+//升序
+numbers.sort(d3.ascending);
+console.log(numbers);
+//降序
+numbers.sort(d3.descending);
+console.log(numbers);
+var numbers=[30,20,10,40,50];
+//最小
+var min=d3.min(numbers);
+//最大
+var max=d3.max(numbers);
+//返回数组格式最大最小
+var extent=d3.extent(numbers);
+console.log(min);
+console.log(max);
+console.log(extent);
+//求值前先处理数据
+var minAcc=d3.min(numbers,function(d){return d*3;});
+var maxAcc=d3.max(numbers,function(d){return d-5;});
+var extentAcc=d3.extent(numbers,function(d){return d%7;});
+console.log(minAcc);
+console.log(maxAcc);
+console.log(extentAcc);
+
+var numbers=[69,11,undefined,53,27,82,65,34,NaN];
+//求总和，平均值
+var sum=d3.sum(numbers,function(d){return d/3;});
+var mean=d3.mean(numbers);
+console.log(sum);
+console.log(mean);
+
+var numbers=[3,1,10];
+var median=d3.median(numbers);
+console.log(median);
+numbers.sort(d3.ascending);
+d3.quantile(numbers,0);
+d3.quantile(numbers,0.25);
+d3.quantile(numbers,0.5);
+d3.quantile(numbers,0.75);
+d3.quantile(numbers,0.9);
+d3.quantile(numbers,1);
+
+//方差和标准差(报错)
+/*var variance=d3.variance(numbers);
+var deviation=d3.deviation(numbers);
+console.log(variance);
+console.log(deviation);*/
+
+
+//****************操作数组
+var numbers=[10,13,16,19,22,25];
+//随机排列数组
+d3.shuffle(numbers);
+console.log(numbers);
+//合并
+d3.merge([[1],[2,3]]);
+//返回邻接的数组对
+var colors=["red","blue","green"];
+var pairs=d3.pairs(colors);
+console.log(pairs);
+//返回等差数列
+var a=d3.range(10);
+console.log(a);
+var b=d3.range(2,10);
+console.log(b);
+var c=d3.range(2,10,2);
+console.log(c);
+
+//****************操作MAP
+var dataset=[{id:1000,color:"red"},{id:1001,color:"green"},{id:1002,color:"blue"}];
+//构建映射
+var map=d3.map(dataset,function(d){return d.id;});
+map.has(1001);
+map.get(1001);
+//map.set(1001,{id:1001,color:"yellow"});
+//map.remove(1001);
+map.keys();
+map.values();
+map.entries();
+console.log(map.keys());
+console.log(map.values());
+console.log(map.entries());
+//****************操作SET
+//包括SET,has,add,remove,values,forEach,empty,size
+
+
+//****************嵌套格式NEST
+</script>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="F:\Jsspace\d3.min.js"></script>
+</head>
+<body>
+	<p></p>
+	<p></p>
+	<p></p>
+</body>
+<script type="text/javascript">
+var persons = [{id:3,name:"张三"},{id:6,name:"李四"},{id:9,name:"王五"}];
+var p = d3.select("body").selectAll("p");
+p.data(persons).text(function(d){
+	return d.id+":"+d.name;
+});
+//修改的时候按照键值修改，即按照d.id修改
+persons = [{id:6,name:"张三"},{id:9,name:"李四"},{id:3,name:"王五"}];
+p.data(persons,function(d){return d.id;}).text(function(d){
+	return d.id+":"+d.name;
+})
+</script>
+</html>
