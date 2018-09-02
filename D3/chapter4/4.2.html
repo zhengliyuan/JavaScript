@@ -105,5 +105,12 @@ console.log(map.entries());
 
 
 //****************嵌套格式NEST
+var persons = [{id:100,name:"张某某",year:1989,hometown:"北京"},
+{id:100,name:"李某某",year:1989,hometown:"北京"},
+{id:100,name:"王某某",year:1989,hometown:"上海"},
+{id:100,name:"赵某某",year:1989,hometown:"广州"},
+{id:100,name:"孙某某",year:1989,hometown:"上海"}];
+
+var nest = d3.nest().key(function(d){return d.year;}).key(function(d){return d.hometown;}).entries(persons);
 </script>
 </html>

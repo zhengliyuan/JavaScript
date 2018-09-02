@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="F:\Jsspace\d3.min.js"></script>
+	<script src="F:\Jsspace\reveal.min.js"></script>
+</head>`
+<body>
+	<p></p>
+</body>
+<script type="text/javascript">
+var dataset=[50,43,120,87,99,167,142];
+var width = 400;
+var height = 400;
+var svg=d3.select("body").append("svg").attr("width",width).attr("height",height);
+var padding = {top:20,right:20,bottom:20,left:20};
+var rectStep = 35;
+var rectWidth = 30;
+//设计矩形图
+var rect = svg.selectAll("rect").data(dataset).enter().append("rect")
+			.attr("fill","steelblue").attr("x",function(d,i){return padding.left + i * rectStep;})
+			.attr("y",function(d){return height - padding.bottom - d;}).attr("width",rectWidth)
+			.attr("height",function(d){return d;});
+//添加标签
+var text = svg.selectAll("text").data(dataset).enter().append("text").attr("fill","black")
+			.attr("font-size","14px").attr("text-anchor","middle")
+			.attr("x",function(d,i){return padding.left + i * rectStep;})
+			.attr("y",function(d){return height - padding.bottom - d;})
+			.attr("dx",rectWidth/2).attr("dy","1em").text(function(d){return d;});
+
+//重新构建图
+function draw(){
+	var updateRect = svg.selectAll("rect").data(dataset);
+	//获取矩形的enter()部分
+	var enterRect = updateRect.enter();
+	//获取矩形的exit()部分
+	var exitRect = updateRect.exit();
+}
+</script>
+</html>

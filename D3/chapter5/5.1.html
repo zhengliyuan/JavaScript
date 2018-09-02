@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="F:\Jsspace\d3-v4.min.js"></script>
+</head>`
+<body>
+	<p></p>
+</body>
+<script type="text/javascript">
+//5.1定量比例尺
+//d3.scaleLinear为d3.v4版本:(v3为d3.scale.linear)
+var linear = d3.scaleLinear().domain([0,500]).range([0,100]);
+console.log(linear(50));
+console.log(linear(250));
+console.log(linear(450));
+//5.1.1线性比例尺
+var linear = d3.scaleLinear().domain([0,20]).range([0,100]);
+console.log(linear(10));
+console.log(linear(30));
+console.log(linear.invert(80));
+linear.clamp(true);
+console.log(linear(30));
+linear.rangeRound([0,100]);
+console.log(linear(13.33));
+linear.domain([0.1230000000,0.4888888888]).nice();
+console.log(linear.domain());
+linear.domain([33.611111,45.97745]).nice();
+console.log(linear.domain());
+var linear = d3.scaleLinear().domain([-20,20]).range([0,100]);
+var ticks = linear.ticks(5);
+console.log(ticks);
+var tickFormat = linear.tickFormat(5,"+");
+for(var i=0;i<ticks.length;i++){
+	ticks[i] = tickFormat(ticks[i]);
+}
+console.log(ticks);
+//5.1.2指数和对数比例尺
+//d3.scalePow.v4版本:(v3为d3.scale.pow)
+var pow = d3.scalePow().exponent(3);
+console.log(pow(2));
+console.log(pow(3));
+//5.1.3量子和分位比例尺
+//d3.scaleQuantize.v4版本:(v3为d3.scale.quantize)
+var quantize = d3.scaleQuantize().domain([0,10]).range(["red","green","blue","yellow","black"]);
+console.log(quantize(1));
+console.log(quantize(3));
+console.log(quantize(5.999999));
+console.log(quantize(6));
+//example
+//domain中的[a,b]中a<b，否则可能会出问题
+var quantize = d3.scaleQuantize().domain([0,50]).range(["#888","#666","#444","#222","#000"]);
+console.log(quantize(5));
+console.log(quantize(15));
+console.log(quantize(25));
+console.log(quantize(35));
+console.log(quantize(45));
+var r = [45,35,25,15,5];
+var svg = d3.select("body").append("svg").attr("width",400).attr("height",400);
+svg.selectAll("circle").data(r).enter().append("circle").attr("cx",function(d,i){return 50+i*30;})
+	.attr("cy",50).attr("r",function(d){return d;}).attr("fill",function(d){return quantize(d);});
+//5.1.4阈值比例尺
+//d3.scaleThreshold.v4版本:(v3为d3.scale.threshold)
+var threshold = d3.scaleThreshold().domain([10,20,30]).range(["red","green","blue","black"]);
+console.log(threshold(5));
+console.log(threshold(15));
+console.log(threshold(25));
+console.log(threshold(35));
+</script>
+</html>
