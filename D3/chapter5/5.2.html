@@ -10,6 +10,37 @@
 </body>
 <script type="text/javascript">
 //5.2序数比例尺
+//d3.scaleOrdinal.v4版本:(v3为d3.scale.ordinal)
+var ordinal = d3.scaleOrdinal().domain([1,2,3,4,5]).range([10,20,30,40,50]);
+console.log(ordinal(1));
+console.log(ordinal(3));
+console.log(ordinal(5));
+console.log(ordinal(8));
+//v3:d3.scaleOrdinal().domain([1,2,3,4,5]).rangePoint([0,100]);
+//v4:d3.scalePoint().domain([1,2,3,4,5]).range([0,100]);
+var ordinal = d3.scalePoint().domain([1,2,3,4,5]).range([0,100]);
+console.log(ordinal.range());
+console.log(ordinal(1));
+console.log(ordinal(3));
+console.log(ordinal(5));
+//v3:d3.scaleOrdinal().domain([1,2,3,4,5]).rangeBands([0,100]);
+//v4:d3.scaleBand().domain([1,2,3,4,5]).range([0,100]);
+var bands = d3.scaleBand().domain([1,2,3,4,5]).range([0,100]);
+console.log(bands.range());
 
+//D3颜色
+//v3:d3.scale.category10();
+//v4:d3.schemeCategory10.   取颜色时是color[i]
+var color = d3.schemeCategory10;
+console.log(color[1]);
+
+//example
+var width = 600;
+var height = 600;
+var dataset = d3.range(5);
+var color = d3.schemeCategory10;
+var svg = d3.select("body").append("svg").attr("width",width).attr("height",height);
+var circle = svg.selectAll("circle").data(dataset).enter().append("circle").attr("cx",function(d,i){return 30+i*80;})
+				.attr("cy",100).attr("r",30).attr("fill",function(d,i){return color[i];});
 </script>
 </html>
