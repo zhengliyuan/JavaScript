@@ -34,13 +34,14 @@ var xAxisWidth = 300;
 var yAxisWidth = 300;
 //x轴比例尺
 var xScale = d3.scaleBand().domain(d3.range(dataset.length)).range([0,xAxisWidth],0.2);
+console.log(xScale.range());
 //y轴比例尺
 var yScale = d3.scaleLinear().domain([0,d3.max(dataset)]).range([0,yAxisWidth]);
 var svg=d3.select("body").append("svg").attr("width",width).attr("height",height);
 //设计矩形图
 var rect = svg.selectAll("rect").data(dataset).enter().append("rect")
 			.attr("fill","steelblue").attr("x",function(d,i){return padding.left + xScale(i);})
-			.attr("y",function(d){return height - padding.bottom - yScale(d);}).attr("width",xScale.range())
+			.attr("y",function(d){return height - padding.bottom - yScale(d);}).attr("width","30")
 			.attr("height",function(d){return yScale(d);});
 //添加标签
 var text = svg.selectAll("text").data(dataset).enter().append("text").attr("fill","black")
