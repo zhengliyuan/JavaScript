@@ -17,8 +17,9 @@ var dataset = {source:{x:100,y:100},
 				target:{x:300,y:200}};
 //创建一个对角线生成器
 //v3:d3.svg.diagonal()
-//v4:已经被移除,
-var diagonal = d3.diagonal();
+//v4:已经被移除,在4.9版本中提供了d3.linkHorizontal()、d3.linkVertical()和d3.linkRadial(),
+var diagonal = d3.linkHorizontal().x(function(d){return d.x;}).y(function(d){return d.y;});
+svg,data(dataset).enter().append("path").attr("d",diagonal(dataset)).attr("fill","none").attr("stroke","black").attr("stroke-width",3);
 svg.append("path").attr("d",diagonal(dataset)).attr("fill","none").attr("stroke","black").attr("stroke-width",3);
 </script>
 </html>

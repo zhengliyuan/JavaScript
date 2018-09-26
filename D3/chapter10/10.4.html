@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="F:\Jsspace\d3-v4.min.js"></script>
+</head>
+<body>
+	
+</body>
+<script type="text/javascript">
+var dataset=[50,43,120,87,99,167,142];
+var width = 400;
+var height = 400;
+var svg=d3.select("body").append("svg").attr("width",width).attr("height",height);
+//弦图
+var continent = ["亚洲","欧洲","非洲","美洲","大洋洲"];
+var population = [[9000,870,3000,1000,5200],[3400,8000,2300,4922,374],
+					[2000,2000,7700,4881,1050],[3000,8012,5531,500,400],
+					[3540,4310,1500,1900,300]];
+//此处V3和V4的不同点有两个
+//V3：d3.layout.chord().matrix(population)
+//V4:d3.chord(population)
+//V3：padding()
+//V4:padAngle
+var chord = d3.chord(population).padAngle(0.03).sortSubgroups(d3.ascending);
+//获取节点和获取弦，V3和V4差别比较大
+//V3:chord.groups()和chord.chords()
+//V4:chord(population)['groups']和chord(population).map(function(item){return item;});
+//获取节点
+var nodes = chord(population)['groups'];
+//获取弦
+var arcs = chord(population).map(function(item){return item;});
+console.log(nodes);
+console.log(arcs);
+//弦图中的<g>元素
+var gChord = svg.append("g").attr("transform","translate("+width/2+","+height/2+")");
+//节点的<g>元素
+var gOut = gChord.append("g");
+//弦的<g>元素
+var gInner = gChord.append("g");
+//创建一个弧生成器，并为其设定内半径和外半径
+//颜色比例尺
+var color20 = d3.schemeCategory20;
+//绘制节点
+var innerRadius = width/2*0.7;
+var outerRadius = innerRadius*1.1;
+//弧生成器
+var acrOuter = d3.arc().innerRadius(innerRadius).outerRadius(outerRadius);
+gOut.selectAll(".outerPath")
+	.data(nodes)
+	.enter().append("path").attr("class","outerPath").style("fill",function(d){return color20[d.index];})
+	.attr("d",acrOuter);
+//节点文字
+gOut.selectAll(".outerText").data(nodes).enter().append("text")
+	.each(function(d,i){
+		d.angle = (d.startAngle+d.endAngle)/2;
+		d.name = continent[i];
+	})
+	.attr("class","outerText").attr("dy",".35em")
+	.attr("transform",function(d){
+		//弦旋转d.angle
+		var result = "rotate("+(d.angle*180/Math.PI)+")";
+		//平移到外半径之外
+		result += "translate(0,"+-1.0*(outerRadius+10)+")";
+		//对位于弦图下方的文字，翻转180度，为了防止其倒着
+		if(d.angle>Math.PI*3/4 && d.angle<Math.PI*5/4)
+			result += "rotate(180)";
+		return result;
+	})
+	.text(function(d){return d.name;});
+//构造内部弦
+//弧生成器
+//此处应注意d3.ribbon()为V4中新增加的，实现V3中chord的部分功能
+var arcInner = d3.ribbon().radius(innerRadius);
+gInner.selectAll(".innerPath").data(arcs).enter().append("path").attr("class","innerPath").attr("d",arcInner)
+		.style("fill",function(d){return color20[d.source.index];});
+//效果
+gOut.selectAll(".outerPath").on("mouseover",fade(0.0))
+	.on("mouseout",fade(1.0));
+function fade(opacity){
+	return function(g,i){
+	gInner.selectAll(".innerPath")
+			.filter(function(d){return d.source.index != i && d.target.index != i;})
+			.transition().style("opacity",opacity);
+	}
+};
+</script>
+</html>

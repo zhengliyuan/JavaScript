@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="F:\Jsspace\d3-v4.min.js"></script>
+</head>
+<body>
+	
+</body>
+<script type="text/javascript">
+var dataset=[50,43,120,87,99,167,142];
+var width = 400;
+var height = 400;
+var svg=d3.select("body").append("svg").attr("width",width).attr("height",height);
+var characters = ["A","B","C","D"];
+var rects = svg.selectAll("rect").data(characters).enter()
+				.append("rect").attr("x",function(d,i){return 10+i*60;}).attr("y",150).attr("width",55).attr("height",55)
+				.attr("rx",5).attr("ry",5).attr("fill","black");
+var texts = svg.selectAll("text").data(characters).enter().append("text").attr("x",function(d,i){return 10+i*60;})
+				.attr("y",150).attr("dx",10).attr("dy",25).attr("fill","white").attr("font-size",24)
+				.text(function(d){return d;});
+//添加监听事件
+d3.select("body").on("keydown",function(){
+	rects.attr("fill",function(d){
+		if(d == String.fromCharCode(d3.event.keyCode)){
+			return "yellow";
+		}else{
+			return "black";
+		}
+	});
+})
+.on("keyup",function(){
+	rects.attr("fill","black");
+})
+</script>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="F:\Jsspace\d3-v4.min.js"></script>
+</head>
+<body>
+	<p id="mypara">Click Here</p>
+</body>
+<script type="text/javascript">
+/*d3.select("#mypara").on("click",function(){
+	d3.select(this).text("Thank You");
+})*/
+// d3.select("#mypara").on("click.first",function(){
+// 	console.log("First Click");
+// })
+// .on("click.second",function(){
+// 	console.log("Second Click");
+// });
+
+var dataset=[50,43,120,87,99,167,142];
+var width = 400;
+var height = 400;
+var svg=d3.select("body").append("svg").attr("width",width).attr("height",height);
+var padding = {top:20,right:20,bottom:20,left:20};
+var rectStep = 35;
+var rectWidth = 30;
+//5.3柱状图的坐标轴
+//x轴宽度
+var xAxisWidth = 300;
+//y轴宽度
+var yAxisWidth = 300;
+//x轴比例尺
+var xScale = d3.scaleBand().domain(d3.range(dataset.length)).range([0,xAxisWidth],0.2);
+console.log(xScale.range());
+//y轴比例尺
+var yScale = d3.scaleLinear().domain([0,d3.max(dataset)]).range([0,yAxisWidth]);
+var svg=d3.select("body").append("svg").attr("width",width).attr("height",height);
+//设计矩形图
+var rect = svg.selectAll("rect").data(dataset).enter().append("rect")
+			.attr("fill","steelblue").attr("x",function(d,i){return padding.left + xScale(i);})
+			.attr("y",function(d){return height - padding.bottom - yScale(d);}).attr("width","30")
+			.attr("height",function(d){return yScale(d);})
+			.on("mouseover",function(d,i){
+				d3.select(this).attr("fill","yellow");
+			})
+			.on("mouseout",function(d,i){
+				d3.select(this).transition().duration(500).attr("fill","steelblue");
+			});
+//添加标签
+var text = svg.selectAll("text").data(dataset).enter().append("text").attr("fill","black")
+			.attr("font-size","14px").attr("text-anchor","middle")
+			.attr("x",function(d,i){return padding.left + xScale(i);})
+			.attr("y",function(d){return height - padding.bottom - yScale(d);})
+			.attr("dx",rectWidth/2).attr("dy","1em").text(function(d){return d;});
+//x轴
+var xAxis = d3.axisBottom(xScale);
+var yAxis = d3.axisLeft(yScale);
+yScale.range([yAxisWidth,0]);
+//y轴
+var yAxis = d3.axisLeft(yScale);
+svg.append("g").attr("class","axis").attr("transform","translate("+padding.left+","+(height-padding.bottom)+")").call(xAxis);
+svg.append("g").attr("class","axis").attr("transform","translate("+padding.left+","+(height-padding.bottom-yAxisWidth)+")").call(yAxis);
+</script>
+</html>

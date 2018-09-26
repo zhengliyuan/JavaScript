@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="F:\Jsspace\d3-v4.min.js"></script>
+</head>
+<body>
+	
+</body>
+<script type="text/javascript">
+var dataset=[50,43,120,87,99,167,142];
+var width = 400;
+var height = 400;
+var svg=d3.select("body").append("svg").attr("width",width).attr("height",height);
+//缩放
+//v3:d3.behavior.drag()
+//v4:d3.drag()
+//v3:origin()修改为subject()
+//v3中dragstart,drag,dragend修改为:start,end,drag
+var zoom = d3.zoom()
+var circles = [{cx:150,cy:200,r:30},
+				{cx:220,cy:200,r:30},
+				{cx:150,cy:270,r:30},
+				{cx:220,cy:200,r:30}];
+var g = svg.append("g").call(zoom);
+g.selectAll("circle").data(circles).enter().append("circle")
+	.attr("cx",function(d){return d.cx;})
+	.attr("cy",function(d){return d.cy;})
+	.attr("r",function(d){return d.r;})
+	.attr("fill","black");
+
+</script>
+</html>

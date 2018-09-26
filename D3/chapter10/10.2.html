@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="F:\Jsspace\d3-v4.min.js"></script>
+</head>
+<body>
+	
+</body>
+<script type="text/javascript">
+var dataset=[50,43,120,87,99,167,142];
+var width = 400;
+var height = 400;
+var svg=d3.select("body").append("svg").attr("width",width).attr("height",height);
+//饼状图
+var dataset = [["小米",60.8],["三星",58.4],["联想",47.3],
+				["苹果",60.8],["华为",58.4],["酷派",47.3],
+				["其他",60.8]];
+//V3:d3.layout.pie()
+//v4:d3.pie()
+var pie = d3.pie().value(function(d){return d[1];});
+var piedata = pie(dataset);
+console.log(piedata);
+var outerRadius = width/3;//外半径
+var innerRadius = 0;//内半径
+//创建弧生成器
+var arc = d3.arc().innerRadius(innerRadius).outerRadius(outerRadius);
+var color = d3.schemeCategory10;
+//添加对应数目的弧组
+var arcs = svg.selectAll("g").data(piedata).enter().append("g").attr("transform","translate("+(width/2)+","+(height/2)+")");
+//添加弧的路径元素
+arcs.append("path").attr("fill",function(d,i){return color[i];}).attr("d",function(d){return arc(d);});
+//添加弧内的文字元素
+arcs.append("text").attr("transform",function(d){
+		var x = arc.centroid(d)[0]*1.4;//centroid()求这片弧的中心点(midpoint)
+		var y = arc.centroid(d)[1]*1.4;
+		return "translate("+x+","+y+")";
+	}).attr("text-anchor","middle")
+	.text(function(d){
+		//计算市场份额的百分比
+		var percent = Number(d.value)/d3.sum(dataset,function(d){return d[1];})*100;
+		//保留1为小数。末尾加一个百分号返回
+		return percent.toFixed(1)+"%";
+	});
+//添加连接弧外文字的直线元素
+arcs.append("line").attr("stroke","black")
+	.attr("x1",function(d){return arc.centroid(d)[0]*2;})
+	.attr("y1",function(d){return arc.centroid(d)[1]*2;})
+	.attr("x2",function(d){return arc.centroid(d)[0]*2.2;})
+	.attr("y2",function(d){return arc.centroid(d)[1]*2.2;});
+//添加弧外的文字元素
+arcs.append("text").attr("transform",function(d){
+		var x=arc.centroid(d)[0]*2.5;
+		var y = arc.centroid(d)[1]*2.5;
+		return "translate("+x+","+y+")";
+	})
+	.attr("text-anchor","middle")
+	.text(function(d){return d.data[0];});
+</script>
+</html>
